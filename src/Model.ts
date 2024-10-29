@@ -6,7 +6,7 @@ export interface Item
   unit: string;
   price: number
 }
-export interface Receipt
+export interface ReceiptItem
 {
     Name:string;
     Quantity:number;
