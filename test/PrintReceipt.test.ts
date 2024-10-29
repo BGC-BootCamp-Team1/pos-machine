@@ -126,7 +126,14 @@ fdescribe("UpdateIProductList", () => {
     }
 
     const newproducts = UpdateIProductList(prosresult);
-    console.log(newproducts);
+    // console.log(newproducts);
+
+    expect(newproducts.length).toBe(3);
+    const newitem = newproducts.find(p => p.barcode === 'ITEM000001');
+    expect(newitem).toBeDefined();
+    if (newitem) {
+      expect(newitem.subtotal).toBe(12);
+    }
     
 
   });
