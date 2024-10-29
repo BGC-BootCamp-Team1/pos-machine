@@ -1,4 +1,5 @@
 
+import { GetItemQuantity } from "../src/GetItemQuantity";
 import { IProduct } from "../src/IProduct";
 import { parseTags } from "../src/parseTags";
 import { printReceipt } from "../src/PrintReceipt";
@@ -39,3 +40,21 @@ Discounted prices：7.50(yuan)
 //     expect(pros[0].price).toBe(3.0);
 //   });
 // });
+
+describe("parseTags", () => {
+  it("should parse tags successfully", () => {
+    const tags = [
+      "ITEM000001",
+      "ITEM000001",
+      "ITEM000001",
+      "ITEM000001",
+      "ITEM000001",
+      "ITEM000003-2.5",
+      "ITEM000003-3.6",
+      "ITEM000005",
+      "ITEM000005-2",
+    ];
+    const result = GetItemQuantity(tags);
+    console.log(result);
+  });
+});
