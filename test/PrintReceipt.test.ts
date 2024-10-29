@@ -24,4 +24,7 @@ Discounted prices：7.50(yuan)
 
     expect(printReceipt(tags)).toEqual(expectText)
   })
+
+
+
 })
