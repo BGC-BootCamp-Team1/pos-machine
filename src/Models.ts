@@ -6,8 +6,9 @@ export interface ItemDto{
 }
 export interface ReceiptItem{
     name: string,
-    quantity: string,
+    quantity: number,
     unit: string,
+    unitPrice: number,
     subtotal: number
 }
 

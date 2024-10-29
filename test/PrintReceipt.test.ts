@@ -1,5 +1,5 @@
 import { loadAllItems, loadPromotions } from '../src/Dependencies'
-import { ItemDto, Promotion } from '../src/Models'
+import { ItemDto, ReceiptItem, Promotion } from '../src/Models'
 import {calculateSubtotal, countReceiptItemsFromTags, printReceipt} from '../src/PrintReceipt'
 
 const itemData: ItemDto[] = loadAllItems() as ItemDto[];
@@ -25,6 +25,29 @@ describe('calculateSubtotal', () => {
   it('should return correct prices', () => {
     const itemCounts = { ITEM000001: 5, ITEM000003: 2.5, ITEM000005: 3 };
     expect(calculateSubtotal(itemCounts,promotions,itemData)).toEqual({ ITEM000001: 12.00, ITEM000003: 37.50, ITEM000005: 9.00 })
+  })
+})
+
+describe('generateReceiptItems', () => {
+  it('should return correct prices', () => {
+    const itemCounts = { ITEM000001: 5, ITEM000003: 2.5};
+    const expectedReceiptItems: ReceiptItem[] = [
+      {
+        name: "Sprite",
+        quantity: 5,
+        unit: "bottle",
+        unitPrice: 3.00,
+        subtotal: 12.00
+      },
+      {
+        name: "Litchi",
+        quantity: 2.5,
+        unit: "bottle",
+        unitPrice: 3.00,
+        subtotal: 12.00
+      }
+    ]
+    expect(calculateSubtotal(itemCounts,promotions,itemData)).toEqual({ ITEM000001: 12.00, ITEM000003: 37.50})
   })
 })
 
