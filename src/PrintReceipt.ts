@@ -28,30 +28,47 @@ export function printReceipt(tags: string[]): string {
   
   const discount = applyPromotion(receiptItems, promotions);
 
-  const expectText = `***<store earning no money>Receipt ***
-Name：Sprite，Quantity：5 bottles，Unit：3.00(yuan)，Subtotal：12.00(yuan)
-Name：Litchi，Quantity：2.5 pounds，Unit：15.00(yuan)，Subtotal：37.50(yuan)
-Name：Instant Noodles，Quantity：3 bags，Unit：4.50(yuan)，Subtotal：9.00(yuan)
-----------------------
-Total：58.50(yuan)
-Discounted prices：7.50(yuan)
-**********************`
-  return expectText;
+  const resultText = render(receiptItems, items, discount);
+
+  return resultText;
+}
+
+export function render(receiptItems: ReceiptItemDto[], allItems: ItemDto[], discount: number): string
+{  
+  let resText = `***<store earning no money>Receipt ***\n`;
+  let totalPrice = 0;
+  for (let receiptItem of receiptItems)
+  {
+    const itemDescription = allItems.find(i => i.barcode === receiptItem.barcode)
+    resText += `Name：${itemDescription?.name}，`;
+    resText += `Quantity：${receiptItem.quantity} ${itemDescription?.unit}s，`;
+    resText += `Unit：${itemDescription?.price.toFixed(2)}(yuan)，`;
+    resText += `Subtotal：${receiptItem.totalPrice.toFixed(2)}(yuan)\n`;
+
+    totalPrice += receiptItem.totalPrice;
+  }
+  resText += "----------------------\n";
+  resText += `Total：${totalPrice.toFixed(2)}(yuan)\n`
+  resText += `Discounted prices：${discount.toFixed(2)}(yuan)\n`
+  resText += `**********************`;
+  
+  return resText;
 }
 
 export function applyPromotion(receiptItems: ReceiptItemDto[], promotions: PromotionDto[]): number {
-  let discount = 0;
+  let allDiscount = 0;
   const promotion = promotions[0];
   for (let item of receiptItems)
   {
     if (promotion.barcodes.includes(item.barcode))
     {
       const freeAmount = Math.floor(item.quantity / 3);
-      discount = item.totalPrice / item.quantity * freeAmount;
+      const discount = item.totalPrice / item.quantity * freeAmount;
       item.totalPrice = item.totalPrice - discount;
+      allDiscount += discount;
     }
   }
-  return discount;
+  return allDiscount;
 }
 
 export function recordQuantityAndCalcPrice(tags: string[], items: ItemDto[]): ReceiptItemDto[]
