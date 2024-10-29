@@ -50,5 +50,24 @@ describe('recordQuantity', () => {
     ];
     expect(recordQuantityAndCalcPrice(tags, items)).toEqual(expectedReceptItems);
   })
+
+  
+  it('should increase quantity with same barcode', () => {
+    const tags = ["ITEM000001", "ITEM000005", "ITEM000001"];
+    const expectedReceptItems: ReceiptItemDto[] = [
+      {
+        barcode: "ITEM000001",
+        quantity: 2,
+        totalPrice: 6
+      },
+      {
+        barcode: "ITEM000005",
+        quantity: 1,
+        totalPrice: 4.5
+      }
+    ];
+    expect(recordQuantityAndCalcPrice(tags, items)).toEqual(expectedReceptItems);
+  })
+
 })
 

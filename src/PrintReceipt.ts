@@ -42,14 +42,23 @@ export function recordQuantityAndCalcPrice(tags: string[], items: ItemDto[]): Re
   const res: ReceiptItemDto[] = [];
   for(let tag of tags)
   {
-    const qt = 1;
-    const unitPrice =  findUnitPrice(tag, items);
-    const newReceiptItem: ReceiptItemDto = {
-      barcode: tag,
-      quantity: qt,
-      totalPrice: qt * unitPrice,
+    const existItem = res.find(i => i.barcode === tag);
+    if (existItem) 
+    {
+      existItem.quantity ++;
+      existItem.totalPrice = existItem.quantity * findUnitPrice(tag, items);
     }
-    res.push(newReceiptItem);
+    else
+    {
+      const qt = 1;
+      const unitPrice =  findUnitPrice(tag, items);
+      const newReceiptItem: ReceiptItemDto = {
+        barcode: tag,
+        quantity: qt,
+        totalPrice: qt * unitPrice,
+      }
+      res.push(newReceiptItem);
+    }
   }
   return res;
 }
