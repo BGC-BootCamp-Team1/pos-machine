@@ -81,5 +81,15 @@ fdescribe("getIProductList", () => {
     const result = GetItemQuantity(tags);
     const prosresult = GetIProductList(result);
     // console.log(prosresult);
+
+    expect(prosresult.length).toBe(3);
+
+   
+    const item = prosresult.find(p => p.barcode === 'ITEM000005');
+    expect(item).toBeDefined();
+    if (item) {
+      expect(item.subtotal).toBe(13.5);
+    }
+
   });
 }); 
