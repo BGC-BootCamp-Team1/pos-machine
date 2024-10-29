@@ -30,7 +30,15 @@ export function parseTags(tags: string[]): IProduct[] {
     }
   }
   for(let [key,val] of quantityMap){
-    tradeProducts.push()
+    let itemIProduct: IProduct ={
+      barcode: key,
+      name: allProducts.find(product => product.barcode === key)?.name as string,
+      unit: allProducts.find(product => product.barcode === key)?.unit as string,
+      price: allProducts.find(product => product.barcode === key)?.price as number,
+      quantity: val,
+      subtotal: subtotalMap.get(key) as number,
+    };
+    tradeProducts.push(itemIProduct)
   }
   return tradeProducts;
 }
