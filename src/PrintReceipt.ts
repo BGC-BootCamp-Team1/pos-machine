@@ -21,9 +21,10 @@ interface ReceiptItemDto
 }
 
 export function printReceipt(tags: string[]): string {
-  var items = loadAllItems();
-  var promotions = loadPromotions();
+  const items = loadAllItems();
+  const promotions = loadPromotions();
 
+  const receiptItems : ReceiptItemDto[] = recordQuantity(tags);
   
   const expectText = `***<store earning no money>Receipt ***
 Name：Sprite，Quantity：5 bottles，Unit：3.00(yuan)，Subtotal：12.00(yuan)
@@ -34,4 +35,9 @@ Total：58.50(yuan)
 Discounted prices：7.50(yuan)
 **********************`
   return expectText;
+}
+
+export function recordQuantity(tags: string[]): ReceiptItemDto[]
+{
+  return [];
 }

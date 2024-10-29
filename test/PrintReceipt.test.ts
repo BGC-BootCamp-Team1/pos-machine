@@ -1,4 +1,4 @@
-import {printReceipt} from '../src/PrintReceipt'
+import {printReceipt, recordQuantity} from '../src/PrintReceipt'
 
 describe('printReceipt', () => {
   it('should print receipt with promotion when print receipt', () => {
@@ -25,5 +25,11 @@ Discounted prices：7.50(yuan)
     expect(printReceipt(tags)).toEqual(expectText)
   })
 
+})
+
+describe('recordQuantity', () => {
+  it('should return empty given empty tags', () => {
+    expect(recordQuantity([])).toEqual([]);
+  })
 })
 
