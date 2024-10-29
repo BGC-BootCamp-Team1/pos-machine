@@ -1,5 +1,7 @@
-import { loadAllItems } from '../src/Dependencies'
-import {printReceipt, ReceiptItemDto, recordQuantityAndCalcPrice} from '../src/PrintReceipt'
+import { loadAllItems, loadPromotions } from '../src/Dependencies'
+import {applyPromotion, printReceipt, ReceiptItemDto, recordQuantityAndCalcPrice} from '../src/PrintReceipt'
+
+const items = loadAllItems();
 
 describe('printReceipt', () => {
   it('should print receipt with promotion when print receipt', () => {
@@ -86,5 +88,19 @@ describe('recordQuantity', () => {
     expect(recordQuantityAndCalcPrice(tags, items)).toEqual(expectedReceptItems);
   })
 
+})
+
+describe('applyPromotion', () => {
+  const promotions = loadPromotions();
+  it('should return 0 discount with no items in promotion', () => {
+    const receiptItems : ReceiptItemDto[] = [
+      {
+        barcode: 'ITEM000004',
+        quantity: 1,
+        totalPrice: 1,
+      }
+    ]
+    expect(applyPromotion(receiptItems, promotions)).toBe(0);
+  })
 })
 
