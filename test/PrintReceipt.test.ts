@@ -102,5 +102,17 @@ describe('applyPromotion', () => {
     ]
     expect(applyPromotion(receiptItems, promotions)).toBe(0);
   })
+
+  it('should return discount amount given quantity is 7', () => {
+    const receiptItems : ReceiptItemDto[] = [
+      {
+        barcode: 'ITEM000000',
+        quantity: 7,
+        totalPrice: 21,
+      }
+    ]
+    expect(applyPromotion(receiptItems, promotions)).toBe(6);
+  
+  })
 })
 

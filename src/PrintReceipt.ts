@@ -41,6 +41,16 @@ Discounted prices：7.50(yuan)
 
 export function applyPromotion(receiptItems: ReceiptItemDto[], promotions: PromotionDto[]): number {
   let discount = 0;
+  const promotion = promotions[0];
+  for (let item of receiptItems)
+  {
+    if (promotion.barcodes.includes(item.barcode))
+    {
+      const freeAmount = Math.floor(item.quantity / 3);
+      discount = item.totalPrice / item.quantity * freeAmount;
+      item.totalPrice = item.totalPrice - discount;
+    }
+  }
   return discount;
 }
 
