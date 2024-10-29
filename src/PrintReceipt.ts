@@ -6,6 +6,7 @@ import { IProduct } from './IProduct';
 export function printReceipt(tags: string[]): string {
   
   const tradeProducts=createTradeProduct(tags);
+  
   let out:string="";
     // for(let item in tradeProducts){
         
