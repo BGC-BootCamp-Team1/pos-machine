@@ -10,3 +10,8 @@ export interface ReceiptItem{
     unit: string,
     subtotal: number
 }
+
+export interface Promotion{
+    type: string,
+    barcodes: string[];
+}

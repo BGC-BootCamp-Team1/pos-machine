@@ -1,21 +1,16 @@
 import { loadAllItems, loadPromotions } from "./Dependencies";
-import { ItemDto, ReceiptItem } from "./Models";
+import { ItemDto, Promotion, ReceiptItem } from "./Models";
 
 export function printReceipt(tags: string[]): string {
   const itemData: ItemDto[] = loadAllItems() as ItemDto[];
-  const receiptItems: ReceiptItem[] = generateReceiptItems(tags, itemData);
+  let receiptItems: ReceiptItem[] = readReceiptItemsFromTags(tags, itemData);
+  const promotions: Promotion[] = loadPromotions() as Promotion[];
+  receiptItems = calculateSubtotal(receiptItems, promotions)
   const receipt: string = renderReceipt(receiptItems);
-  return `***<store earning no money>Receipt ***
-Name：Sprite，Quantity：5 bottles，Unit：3.00(yuan)，Subtotal：12.00(yuan)
-Name：Litchi，Quantity：2.5 pounds，Unit：15.00(yuan)，Subtotal：37.50(yuan)
-Name：Instant Noodles，Quantity：3 bags，Unit：4.50(yuan)，Subtotal：9.00(yuan)
-----------------------
-Total：58.50(yuan)
-Discounted prices：7.50(yuan)
-**********************`;
+  return receipt;
 }
 
-function generateReceiptItems(
+function readReceiptItemsFromTags(
   tags: string[],
   itemData: ItemDto[]
 ): ReceiptItem[] {
@@ -24,4 +19,8 @@ function generateReceiptItems(
 
 function renderReceipt(receiptItems: ReceiptItem[]): string {
   return "";
+}
+
+function calculateSubtotal(receiptItems: ReceiptItem[], promotions: Promotion[]):ReceiptItem[] {
+  return [];
 }
