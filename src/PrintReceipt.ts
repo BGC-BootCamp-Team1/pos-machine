@@ -91,8 +91,25 @@ function renderReceipt(receiptItems: ReceiptItem[]): string {
     
   });
   receipt+="----------------------\n";
-  receipt+="Total：58.50(yuan)\n"
-  receipt+="Discounted prices：7.50(yuan)\n"
+  receipt+="Total："+ calculateTotalAfterDiscount(receiptItems).toFixed(2) +"(yuan)\n"
+  const discountedPrice = calculateTotalBeforeDiscount(receiptItems)-calculateTotalAfterDiscount(receiptItems)
+  receipt+="Discounted prices："+discountedPrice.toFixed(2)+"(yuan)\n"
   receipt+="**********************"
   return receipt;
+}
+
+function calculateTotalAfterDiscount(receiptItems: ReceiptItem[]): number{
+  let total: number = 0.00;
+  receiptItems.forEach(receiptItem => {
+    total+= receiptItem.subtotal;
+  });
+  return total;
+}
+
+function calculateTotalBeforeDiscount(receiptItems: ReceiptItem[]): number{
+  let total: number = 0.00;
+  receiptItems.forEach(receiptItem => {
+    total+= receiptItem.unitPrice*receiptItem.quantity;
+  });
+  return total;
 }
