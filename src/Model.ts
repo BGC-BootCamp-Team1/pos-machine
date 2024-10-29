@@ -8,11 +8,11 @@ export interface Item
 }
 export interface ReceiptItem
 {
-    Name:string;
-    Quantity:number;
-    UnitName: string;
-    Unit: number;
-    Subtotal: number
+  name:string;
+  quantity:number;
+  unitName: string;
+  unitMoney: number;
+  subtotal: number
 }
 export interface Promotion
 {
