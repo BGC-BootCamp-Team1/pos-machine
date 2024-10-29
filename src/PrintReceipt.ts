@@ -42,22 +42,19 @@ export function recordQuantityAndCalcPrice(tags: string[], items: ItemDto[]): Re
   const res: ReceiptItemDto[] = [];
   for(let tag of tags)
   {
-    const existItem = res.find(i => i.barcode === tag);
+    let deserializeTag = deserializeTagToReceiptItem(tag);
+    const existItem = res.find(i => i.barcode === deserializeTag.barcode);
     if (existItem) 
     {
-      existItem.quantity ++;
-      existItem.totalPrice = existItem.quantity * findUnitPrice(tag, items);
+      existItem.quantity = deserializeTag.quantity + existItem.quantity;
+      existItem.totalPrice = existItem.quantity * findUnitPrice(deserializeTag.barcode, items);
     }
     else
     {
-      const qt = 1;
-      const unitPrice =  findUnitPrice(tag, items);
-      const newReceiptItem: ReceiptItemDto = {
-        barcode: tag,
-        quantity: qt,
-        totalPrice: qt * unitPrice,
-      }
-      res.push(newReceiptItem);
+      const unitPrice =  findUnitPrice(deserializeTag.barcode, items);
+      deserializeTag.totalPrice = deserializeTag.quantity * unitPrice;
+
+      res.push(deserializeTag);
     }
   }
   return res;
@@ -68,4 +65,23 @@ function findUnitPrice(tag: string, items: ItemDto[]): number{
   if (!target)
     return 0;
   return target.price;
+}
+
+function deserializeTagToReceiptItem(tag: string): ReceiptItemDto {
+  if (tag.includes('-'))
+  {
+    const splitTag = tag.split('-');
+    return {
+      barcode: splitTag[0],
+      quantity: Number.parseFloat(splitTag[1]),
+      totalPrice: 0
+    }
+  }
+  else {
+    return {
+      barcode: tag,
+      quantity: 1,
+      totalPrice: 0
+    }
+  }
 }

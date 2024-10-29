@@ -69,5 +69,22 @@ describe('recordQuantity', () => {
     expect(recordQuantityAndCalcPrice(tags, items)).toEqual(expectedReceptItems);
   })
 
+  it('should deserialize weigh barcode', () => {
+    const tags = ["ITEM000001", "ITEM000005", "ITEM000001-1.5"];
+    const expectedReceptItems: ReceiptItemDto[] = [
+      {
+        barcode: "ITEM000001",
+        quantity: 2.5,
+        totalPrice: 7.5
+      },
+      {
+        barcode: "ITEM000005",
+        quantity: 1,
+        totalPrice: 4.5
+      }
+    ];
+    expect(recordQuantityAndCalcPrice(tags, items)).toEqual(expectedReceptItems);
+  })
+
 })
 
