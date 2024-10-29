@@ -1,4 +1,4 @@
-import { createTradeProduct } from "../src/createTradeProduct";
+import { createTradeProduct } from "../src/parseTags";
 import { IProduct } from "../src/IProduct";
 import { printReceipt } from "../src/PrintReceipt";
 
