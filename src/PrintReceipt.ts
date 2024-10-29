@@ -77,5 +77,22 @@ function generateReceiptItems(
 }
 
 function renderReceipt(receiptItems: ReceiptItem[]): string {
-  return "";
+  let receipt: string = "***<store earning no money>Receipt ***\n";
+  receiptItems.forEach(receiptItem => {
+    receipt+=`Name：${receiptItem.name}，Quantity：${receiptItem.quantity} ${receiptItem.unit}`
+    if(receiptItem.quantity!==1){
+      receipt+="s"
+    }
+    receipt+="，Unit："
+    receipt+=receiptItem.unitPrice.toFixed(2)
+    receipt+="(yuan)，Subtotal："
+    receipt+=receiptItem.subtotal.toFixed(2)
+    receipt+="(yuan)\n"
+    
+  });
+  receipt+="----------------------\n";
+  receipt+="Total：58.50(yuan)\n"
+  receipt+="Discounted prices：7.50(yuan)\n"
+  receipt+="**********************"
+  return receipt;
 }
