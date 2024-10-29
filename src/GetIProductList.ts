@@ -4,11 +4,10 @@ import { IProduct } from "./IProduct";
 export function GetIProductList(quantityMap: Map<string, number>): IProduct[] {
   const products: IProduct[] = [];
   const allItems = loadAllItems();
-  
 
   for (const [barcode, quantity] of quantityMap) {
     const newItem = allItems.find((item) => item.barcode === barcode);
-    
+
     if (newItem) {
       const subtotal = newItem.price * quantity;
       const product = {

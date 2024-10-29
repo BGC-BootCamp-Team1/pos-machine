@@ -1,4 +1,3 @@
-
 import { GetIProductList } from "../src/GetIProductList";
 import { GetItemQuantity } from "../src/GetItemQuantity";
 import { IProduct } from "../src/IProduct";
@@ -6,7 +5,7 @@ import { IProduct } from "../src/IProduct";
 import { printReceipt } from "../src/PrintReceipt";
 import { UpdateIProductList } from "../src/UpdateIProductList";
 
-describe("printReceipt", () => {
+fdescribe("printReceipt", () => {
   it("should print receipt with promotion when print receipt", () => {
     const tags = [
       "ITEM000001",
@@ -58,13 +57,12 @@ describe("parseTags", () => {
     ];
     const result = GetItemQuantity(tags);
     // console.log(result);
-      expect(result.size).toBe(3);
-      expect(result.get("ITEM000001")).toEqual(5);
-      // expect(result.get("ITEM000003")).toEqual(2.5);
-      expect(result.get("ITEM000003")).toEqual(6.1);
+    expect(result.size).toBe(3);
+    expect(result.get("ITEM000001")).toEqual(5);
+    // expect(result.get("ITEM000003")).toEqual(2.5);
+    expect(result.get("ITEM000003")).toEqual(6.1);
   });
-}); 
-
+});
 
 describe("getIProductList", () => {
   it("should get IProduct List successfully", () => {
@@ -85,21 +83,15 @@ describe("getIProductList", () => {
 
     expect(prosresult.length).toBe(3);
 
-   
-    const item = prosresult.find(p => p.barcode === 'ITEM000005');
+    const item = prosresult.find((p) => p.barcode === "ITEM000005");
     expect(item).toBeDefined();
     if (item) {
       expect(item.subtotal).toBe(13.5);
     }
-
   });
-}); 
+});
 
-
-
-
-
-fdescribe("UpdateIProductList", () => {
+describe("UpdateIProductList", () => {
   it("should applyPromotions successfully", () => {
     const tags = [
       "ITEM000001",
@@ -118,8 +110,7 @@ fdescribe("UpdateIProductList", () => {
 
     expect(prosresult.length).toBe(3);
 
-   
-    const item = prosresult.find(p => p.barcode === 'ITEM000005');
+    const item = prosresult.find((p) => p.barcode === "ITEM000005");
     expect(item).toBeDefined();
     if (item) {
       expect(item.subtotal).toBe(13.5);
@@ -129,16 +120,11 @@ fdescribe("UpdateIProductList", () => {
     console.log(newproducts);
 
     expect(newproducts.length).toBe(3);
-    const newitem = newproducts.find(p => p.barcode === 'ITEM000001');
+    const newitem = newproducts.find((p) => p.barcode === "ITEM000001");
     expect(newitem).toBeDefined();
     if (newitem) {
       expect(newitem.subtotal).toBe(12);
       expect(newitem.subdiscount).toBe(3);
     }
-    
-
   });
-}); 
-
-
-
+});

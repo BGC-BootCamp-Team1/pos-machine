@@ -4,7 +4,6 @@ import { GetIProductList } from "./GetIProductList";
 import { GetItemQuantity } from "./GetItemQuantity";
 import { IProduct } from "./IProduct";
 import { UpdateIProductList } from "./UpdateIProductList";
-// import { getReciptContent } from './getReciptContent';
 
 export function printReceipt(tags: string[]): string {
   // const tradeProducts = parseTags(tags);

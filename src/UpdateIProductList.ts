@@ -2,7 +2,7 @@ import { loadPromotions } from "./Dependencies";
 import { IProduct } from "./IProduct";
 
 export function UpdateIProductList(products: IProduct[]): IProduct[] {
-//   let PromotedProduct: IProduct[] = products;
+  //   let PromotedProduct: IProduct[] = products;
   const promotions = loadPromotions();
   const promoBarcodes = new Set<string>();
 
@@ -17,7 +17,7 @@ export function UpdateIProductList(products: IProduct[]): IProduct[] {
       return {
         ...product,
         subtotal: updatedSubtotal,
-        subdiscount: product.price ,
+        subdiscount: product.price,
       };
     }
 
