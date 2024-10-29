@@ -1,6 +1,6 @@
-import { loadAllItems } from '../src/Dependencies'
-import { Item, ReceiptItem } from '../src/Model'
-import {genAllReceipt, printReceipt} from '../src/PrintReceipt'
+import { loadAllItems, loadPromotions } from '../src/Dependencies'
+import { Item, Promotion, ReceiptItem } from '../src/Model'
+import {genAllReceipt, printReceipt, checkPromotion} from '../src/PrintReceipt'
 
 describe('printReceipt', () => {
   it('should print receipt with promotion when print receipt', () => {
@@ -39,5 +39,20 @@ Discounted prices：7.50(yuan)
       ['ITEM000003', { name: 'Litchi', quantity: 3.5, unitName: 'pound', unitMoney: 15.00, subtotal: 52.50 }]
     ])
     expect(genAllReceipt(allItems, tags)).toEqual(expectedMap)
+  })
+
+  it('should return Promoted Receipts when checkPromotion', ()=>{
+    let allPromotions: Promotion[] = loadPromotions();
+    const receiptsMap: Map<string, ReceiptItem> = new Map([ 
+      ['ITEM000001', { name: 'Sprite', quantity: 2, unitName: 'bottle', unitMoney: 3.00, subtotal: 6.00 }],
+      ['ITEM000003', { name: 'Litchi', quantity: 3.5, unitName: 'pound', unitMoney: 15.00, subtotal: 52.50 }]
+    ])
+    let discountedReceipts: ReceiptItem[] = checkPromotion(receiptsMap, allPromotions);
+    const expectReceipts = 
+    [
+      { name: 'Sprite', quantity: 2, unitName: 'bottle', unitMoney: 3.00, subtotal: 6.00 },
+      { name: 'Litchi', quantity: 3.5, unitName: 'pound', unitMoney: 15.00, subtotal: 37.50 }
+    ]
+    expect(checkPromotion(receiptsMap, allPromotions)).toEqual(expectReceipts)
   })
 })
