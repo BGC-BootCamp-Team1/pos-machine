@@ -69,5 +69,25 @@ export function checkPromotion(itemMap: Map<string, ReceiptItem>, allPromotions:
 }
 
 export function render(allReceipts: ReceiptItem[]): string {
-  return ''
+  let total = 0;
+  let discountedTotal = 0;
+  const lines = [];
+
+  lines.push('***<store earning no money>Receipt ***');
+
+  allReceipts.forEach(receipt => {
+    const line = `Name：${receipt.name}，Quantity：${receipt.quantity} ${receipt.unitName}s，Unit：${receipt.unitMoney.toFixed(2)}(yuan)，Subtotal：${receipt.subtotal.toFixed(2)}(yuan)`;
+    lines.push(line);
+    total += receipt.subtotal;
+    discountedTotal += receipt.quantity * receipt.unitMoney;
+  });
+
+  lines.push('----------------------');
+
+  lines.push(`Total：${total.toFixed(2)}(yuan)`);
+  lines.push(`Discounted prices：${(discountedTotal - total).toFixed(2)}(yuan)`);
+
+  lines.push('**********************');
+
+  return lines.join('\n');
 }
