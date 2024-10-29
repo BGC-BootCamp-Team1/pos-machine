@@ -1,12 +1,13 @@
-import { parseTags } from "./parseTags";
+// import { parseTags } from "./parseTags";
 import { loadAllItems, loadPromotions } from "./Dependencies";
 import { IProduct } from "./IProduct";
 // import { getReciptContent } from './getReciptContent';
 
 export function printReceipt(tags: string[]): string {
-  const tradeProducts = parseTags(tags);
+  // const tradeProducts = parseTags(tags);
+  
   let out: string = "";
-  out = render(tradeProducts.tradeProducts, tradeProducts.totalDiscount);
+  // out = render(tradeProducts.tradeProducts, tradeProducts.totalDiscount);
   return out;
 
   

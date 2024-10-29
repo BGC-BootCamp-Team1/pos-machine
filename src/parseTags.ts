@@ -5,45 +5,45 @@ import { loadAllItems, loadPromotions } from "./Dependencies";
 import { IProduct } from "./IProduct";
 import { GetItemQuantity } from "./GetItemQuantity";
 
-export function parseTags(tags: string[]) {
-  const allProducts = loadAllItems();
-  const tradeProducts: IProduct[] = [];
-  const realtag = tags.map((tag) => tag.split("-")[0]);
+// export function parseTags(tags: string[]) {
+//   const allProducts = loadAllItems();
+//   const tradeProducts: IProduct[] = [];
+//   const realtag = tags.map((tag) => tag.split("-")[0]);
 
-  const quantityMap: Map<string, number> = GetItemQuantity(tags);
+//   const quantityMap: Map<string, number> = GetItemQuantity(tags);
   
-  // const promotionList:number[] = whetherEngagePromotion(tags);
-  const res = calcSubTotal(quantityMap);
-  const subtotalMap = res.SubTotal;
-  const totalDiscount = res.totalDiscount;
+//   // const promotionList:number[] = whetherEngagePromotion(tags);
+//   const res = calcSubTotal(quantityMap);
+//   const subtotalMap = res.SubTotal;
+//   const totalDiscount = res.totalDiscount;
 
-  for (let tag of tags) {
-    let item = allProducts.find((product) => product.barcode === tag);
-    if (item) {
-      // let tradeProduct: IProduct = {
-      //   barcode: item.barcode,
-      //   name: item.name,
-      //   unit: item.unit,
-      //   // quantity: quantityList.shift(),
-      //   price: item.price,
-    }
-  }
-  for (let [key, val] of quantityMap) {
-    let itemIProduct: IProduct = {
-      barcode: key,
-      name: allProducts.find((product) => product.barcode === key)
-        ?.name as string,
-      unit: allProducts.find((product) => product.barcode === key)
-        ?.unit as string,
-      price: allProducts.find((product) => product.barcode === key)
-        ?.price as number,
-      quantity: val,
-      subtotal: subtotalMap.get(key) as number,
-    };
-    tradeProducts.push(itemIProduct);
-  }
-  return { tradeProducts, totalDiscount };
-}
+//   for (let tag of tags) {
+//     let item = allProducts.find((product) => product.barcode === tag);
+//     if (item) {
+//       // let tradeProduct: IProduct = {
+//       //   barcode: item.barcode,
+//       //   name: item.name,
+//       //   unit: item.unit,
+//       //   // quantity: quantityList.shift(),
+//       //   price: item.price,
+//     }
+//   }
+//   for (let [key, val] of quantityMap) {
+//     let itemIProduct: IProduct = {
+//       barcode: key,
+//       name: allProducts.find((product) => product.barcode === key)
+//         ?.name as string,
+//       unit: allProducts.find((product) => product.barcode === key)
+//         ?.unit as string,
+//       price: allProducts.find((product) => product.barcode === key)
+//         ?.price as number,
+//       quantity: val,
+//       subtotal: subtotalMap.get(key) as number,
+//     };
+//     tradeProducts.push(itemIProduct);
+//   }
+//   return { tradeProducts, totalDiscount };
+// }
 
 function calcSubTotal(quantityMap: Map<string, number>) {
   const SubTotal = new Map<string, number>();

@@ -2,7 +2,7 @@
 import { GetIProductList } from "../src/GetIProductList";
 import { GetItemQuantity } from "../src/GetItemQuantity";
 import { IProduct } from "../src/IProduct";
-import { parseTags } from "../src/parseTags";
+
 import { printReceipt } from "../src/PrintReceipt";
 import { UpdateIProductList } from "../src/UpdateIProductList";
 
@@ -126,13 +126,14 @@ fdescribe("UpdateIProductList", () => {
     }
 
     const newproducts = UpdateIProductList(prosresult);
-    // console.log(newproducts);
+    console.log(newproducts);
 
     expect(newproducts.length).toBe(3);
     const newitem = newproducts.find(p => p.barcode === 'ITEM000001');
     expect(newitem).toBeDefined();
     if (newitem) {
       expect(newitem.subtotal).toBe(12);
+      expect(newitem.subdiscount).toBe(3);
     }
     
 
