@@ -1,4 +1,6 @@
-import {printReceipt} from '../src/PrintReceipt'
+import { loadAllItems } from '../src/Dependencies'
+import { Item, ReceiptItem } from '../src/Model'
+import {genAllReceipt, printReceipt} from '../src/PrintReceipt'
 
 describe('printReceipt', () => {
   it('should print receipt with promotion when print receipt', () => {
@@ -23,5 +25,19 @@ Discounted prices：7.50(yuan)
 **********************`
 
     expect(printReceipt(tags)).toEqual(expectText)
+  })
+
+  it('should return itemMap when genAllReceipt', ()=>{
+    let allItems: Item[] = loadAllItems();
+    const tags = [
+      'ITEM000001',
+      'ITEM000001',
+      'ITEM000003-3.5',
+    ]
+    const expectedMap: Map<string, ReceiptItem> = new Map([ 
+      ['ITEM000001', { name: 'Sprite', quantity: 2, unitName: 'bottle', unitMoney: 3.00, subtotal: 15.00 }],
+      ['ITEM000003', { name: 'Litchi', quantity: 3.5, unitName: 'pound', unitMoney: 15.00, subtotal: 52.50 }]
+    ])
+    expect(genAllReceipt(allItems, tags)).toEqual(expectedMap)
   })
 })
