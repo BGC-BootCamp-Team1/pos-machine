@@ -4,6 +4,7 @@ import { GetItemQuantity } from "../src/GetItemQuantity";
 import { IProduct } from "../src/IProduct";
 import { parseTags } from "../src/parseTags";
 import { printReceipt } from "../src/PrintReceipt";
+import { UpdateIProductList } from "../src/UpdateIProductList";
 
 describe("printReceipt", () => {
   it("should print receipt with promotion when print receipt", () => {
@@ -65,7 +66,7 @@ describe("parseTags", () => {
 }); 
 
 
-fdescribe("getIProductList", () => {
+describe("getIProductList", () => {
   it("should get IProduct List successfully", () => {
     const tags = [
       "ITEM000001",
@@ -93,3 +94,43 @@ fdescribe("getIProductList", () => {
 
   });
 }); 
+
+
+
+
+
+fdescribe("UpdateIProductList", () => {
+  it("should applyPromotions successfully", () => {
+    const tags = [
+      "ITEM000001",
+      "ITEM000001",
+      "ITEM000001",
+      "ITEM000001",
+      "ITEM000001",
+      "ITEM000003-2.5",
+      "ITEM000003-3.6",
+      "ITEM000005",
+      "ITEM000005-2",
+    ];
+    const result = GetItemQuantity(tags);
+    const prosresult = GetIProductList(result);
+    console.log(prosresult);
+
+    expect(prosresult.length).toBe(3);
+
+   
+    const item = prosresult.find(p => p.barcode === 'ITEM000005');
+    expect(item).toBeDefined();
+    if (item) {
+      expect(item.subtotal).toBe(13.5);
+    }
+
+    const newproducts = UpdateIProductList(prosresult);
+    console.log(newproducts);
+    
+
+  });
+}); 
+
+
+
