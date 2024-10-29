@@ -5,5 +5,6 @@ export interface IProduct {
   price: number;
   quantity: number;
   subtotal: number;
+  subdiscount:number;
 }
 

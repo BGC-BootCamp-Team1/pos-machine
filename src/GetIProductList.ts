@@ -18,6 +18,7 @@ export function GetIProductList(quantityMap: Map<string, number>): IProduct[] {
         price: newItem.price,
         quantity,
         subtotal,
+        subdiscount: 0,
       };
       products.push(product);
     }

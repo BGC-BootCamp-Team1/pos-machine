@@ -17,6 +17,7 @@ export function UpdateIProductList(products: IProduct[]): IProduct[] {
       return {
         ...product,
         subtotal: updatedSubtotal,
+        discount: product.price ,
       };
     }
 
