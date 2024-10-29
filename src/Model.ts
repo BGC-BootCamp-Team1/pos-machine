@@ -18,5 +18,6 @@ export interface ItemMetaData{
     Name: string;
     Quantity: Decimal;
     Unit:number;
+    unit:string;
     Subtotal:Decimal;
 }

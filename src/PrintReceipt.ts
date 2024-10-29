@@ -37,6 +37,7 @@ function generateReceiptMetaData(map: Map<string, number>, itemList:Item[], prom
       Name: item.name,
       Quantity: new Decimal(value) ,
       Unit:item.price,
+      unit:item.unit,
       Subtotal:new Decimal(0)
     }
 
@@ -62,14 +63,13 @@ function generateReceiptMetaData(map: Map<string, number>, itemList:Item[], prom
 
 function render(metaData: MetaData) {
   let receipt:string = "";
-  receipt+=`***<store earning no money>Receipt ***/n`
+  receipt+=`***<store earning no money>Receipt ***\n`
   for(let item of metaData.items) {
-    receipt+=`Name：${item.Name}，Quantity：${item.Quantity} ${item.Unit}s，Unit：3.00(yuan)，Subtotal：12.00(yuan)
-`
-
-
+    receipt+=`Name：${item.Name}，Quantity：${item.Quantity} ${item.unit}s，Unit：${item.Unit.toFixed(2)}(yuan)，Subtotal：${item.Subtotal.toFixed(2)}(yuan)\n`
   }
-  return "";
+  receipt+=`----------------------\nTotal：${metaData.Total.toFixed(2)}(yuan)\nDiscounted prices：${metaData.DiscountedPrices.toFixed(2)}(yuan)\n**********************`
+
+  return receipt;
 }
 
 export function printReceipt(tags: string[]): string {
@@ -85,16 +85,3 @@ function calculateTotalPriceOneFree(price: number, quantity: number): number {
   const actualQuantityToPay = Math.ceil(quantity / 3 * 2);
   return actualQuantityToPay * price;
 }
-
-printReceipt(
-    [
-      'ITEM000001',
-      'ITEM000001',
-      'ITEM000001',
-      'ITEM000001',
-      'ITEM000001',
-      'ITEM000003-2.5',
-      'ITEM000005',
-      'ITEM000005-2',
-    ]
-)
