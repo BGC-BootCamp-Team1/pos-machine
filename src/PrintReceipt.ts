@@ -12,9 +12,9 @@ interface ItemPrice {
 export function printReceipt(tags: string[]): string {
   const itemData: ItemDto[] = loadAllItems() as ItemDto[];
   const promotions: Promotion[] = loadPromotions() as Promotion[];
-  const itemCount: ItemCount = countReceiptItemsFromTags(tags);
-  const itemPrice = calculateSubtotal(itemCount, promotions, itemData);
-  const receiptItems: ReceiptItem[] = generateReceiptItems(itemCount,itemPrice,itemData);
+  const itemCounts: ItemCount = countReceiptItemsFromTags(tags);
+  const itemPrices: ItemPrice = calculateSubtotal(itemCounts, promotions, itemData);
+  const receiptItems: ReceiptItem[] = generateReceiptItems(itemCounts,itemPrices,itemData);
   return renderReceipt(receiptItems);
 }
 
