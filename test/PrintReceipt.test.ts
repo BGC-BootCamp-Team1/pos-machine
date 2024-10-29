@@ -1,7 +1,12 @@
-import {countReceiptItemsFromTags, printReceipt} from '../src/PrintReceipt'
+import { loadAllItems, loadPromotions } from '../src/Dependencies'
+import { ItemDto, Promotion } from '../src/Models'
+import {calculateSubtotal, countReceiptItemsFromTags, printReceipt} from '../src/PrintReceipt'
 
-describe('printReceipt', () => {
-  it('should countReceiptItemsFromTags return correct counts', () => {
+const itemData: ItemDto[] = loadAllItems() as ItemDto[];
+const promotions: Promotion[] = loadPromotions() as Promotion[];
+
+describe('countReceiptItemsFromTags', () => {
+  it('should return correct counts', () => {
     const tags = [
       'ITEM000001',
       'ITEM000001',
@@ -12,7 +17,14 @@ describe('printReceipt', () => {
       'ITEM000005',
       'ITEM000005-2',
     ]
-    expect(countReceiptItemsFromTags(tags)).toEqual({ "ITEM000001": 5, ITEM000003: 2.5, ITEM000005: 3 })
+    expect(countReceiptItemsFromTags(tags)).toEqual({ ITEM000001: 5, ITEM000003: 2.5, ITEM000005: 3 })
+  })
+})
+
+describe('calculateSubtotal', () => {
+  it('should return correct prices', () => {
+    const itemCounts = { ITEM000001: 5, ITEM000003: 2.5, ITEM000005: 3 };
+    expect(calculateSubtotal(itemCounts,promotions,itemData)).toEqual({ ITEM000001: 12.00, ITEM000003: 37.50, ITEM000005: 9.00 })
   })
 })
 

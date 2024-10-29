@@ -1,5 +1,6 @@
 import { loadAllItems, loadPromotions } from "./Dependencies";
 import { ItemDto, Promotion, ReceiptItem } from "./Models";
+
 interface ItemCount {
   [key: string]: number;
 }
@@ -31,22 +32,37 @@ export function countReceiptItemsFromTags(tags: string[]): ItemCount {
   });
   return itemCounts;
 }
-
-function renderReceipt(receiptItems: ReceiptItem[]): string {
-  return "";
-}
-
-function calculateSubtotal(
-  itemCount: ItemCount,
+export function calculateSubtotal(
+  itemCounts: ItemCount,
   promotions: Promotion[],
   itemData: ItemDto[]
 ): ItemPrice {
-  throw new Error("Function not implemented.");
+  const itemPrices: ItemPrice = {};
+  itemData.forEach(itemDto => {
+    const barcode = itemDto.barcode;
+    if (itemCounts.hasOwnProperty(barcode)) {
+      let quantity = itemCounts[barcode];
+      let price = itemDto.price;
+      if (promotions[0].type === 'BUY_TWO_GET_ONE_FREE' && 
+        promotions[0].barcodes.includes(barcode)) {
+        const freeItems = Math.floor(quantity / 3);
+        quantity -= freeItems;
+      }
+      itemPrices[barcode] = quantity * price;
+    }
+  });
+
+  return itemPrices;
 }
+
 function generateReceiptItems(
   itemCount: ItemCount,
   promotions: Promotion[],
   itemData: ItemDto[]
 ) {
   return [];
+}
+
+function renderReceipt(receiptItems: ReceiptItem[]): string {
+  return "";
 }
