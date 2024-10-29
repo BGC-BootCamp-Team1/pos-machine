@@ -22,7 +22,10 @@ export function convert2Map(tags: string[]) {
 }
 
 
-export function generateReceiptMetaData(map: Map<string, number>, itemList:Item[], promotionList: { type: string; barcodes: string[] }[]):MetaData {
+export function generateReceiptMetaData(map: Map<string, number>,
+                                        itemList:Item[],
+                                        promotionList: { type: string; barcodes: string[] }[])
+    :MetaData {
   let metaData:MetaData={
     DiscountedPrices: new Decimal(0),
     Total: new Decimal(0),
@@ -51,12 +54,10 @@ export function generateReceiptMetaData(map: Map<string, number>, itemList:Item[
       metaData.Total =metaData.Total.add(subTotal);
     }else {
       itemMetaData.Subtotal = itemMetaData.Subtotal.add(item.price*value);
-
       metaData.Total = metaData.Total.add(item.price*value);
     }
 
     metaData.items.push(itemMetaData)
-
   }
   return metaData;
 }
@@ -81,7 +82,7 @@ export function printReceipt(tags: string[]): string {
   return expectText
 }
 
-function calculateTotalPriceOneFree(price: number, quantity: number): number {
+export function calculateTotalPriceOneFree(price: number, quantity: number): number {
   const actualQuantityToPay = Math.ceil(quantity / 3 * 2);
   return actualQuantityToPay * price;
 }
