@@ -1,6 +1,6 @@
 import {loadAllItems, loadPromotions} from './Dependencies'
 import {Decimal} from 'decimal.js';
-import {MetaData, Item, ItemMetaData} from "./Model";
+import {Item, ItemMetaData, MetaData} from "./Model";
 
 export function convert2Map(tags: string[]) {
   let map = new Map<string,number>();
@@ -78,8 +78,7 @@ export function printReceipt(tags: string[]): string {
   let promotionList = loadPromotions();
   let map :Map<string,number> =convert2Map(tags)
   let metaData:MetaData = generateReceiptMetaData(map,itemList,promotionList);
-  let expectText:string = render(metaData);
-  return expectText
+  return render(metaData)
 }
 
 export function calculateTotalPriceOneFree(price: number, quantity: number): number {
