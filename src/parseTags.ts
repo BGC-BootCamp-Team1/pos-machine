@@ -3,13 +3,15 @@ import { Type } from "path-scurry";
 import { countTag } from "./countItem";
 import { loadAllItems, loadPromotions } from "./Dependencies";
 import { IProduct } from "./IProduct";
+import { GetItemQuantity } from "./GetItemQuantity";
 
 export function parseTags(tags: string[]) {
   const allProducts = loadAllItems();
   const tradeProducts: IProduct[] = [];
   const realtag = tags.map((tag) => tag.split("-")[0]);
 
-  const quantityMap: Map<string, number> = countTag(tags);
+  const quantityMap: Map<string, number> = GetItemQuantity(tags);
+  
   // const promotionList:number[] = whetherEngagePromotion(tags);
   const res = calcSubTotal(quantityMap);
   const subtotalMap = res.SubTotal;

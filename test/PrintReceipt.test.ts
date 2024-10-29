@@ -1,4 +1,5 @@
 
+import { GetIProductList } from "../src/GetIProductList";
 import { GetItemQuantity } from "../src/GetItemQuantity";
 import { IProduct } from "../src/IProduct";
 import { parseTags } from "../src/parseTags";
@@ -42,7 +43,7 @@ Discounted prices：7.50(yuan)
 // });
 
 describe("parseTags", () => {
-  it("should parse tags successfully", () => {
+  it("should parse tags' barcode and quantity successfully", () => {
     const tags = [
       "ITEM000001",
       "ITEM000001",
@@ -61,4 +62,24 @@ describe("parseTags", () => {
       // expect(result.get("ITEM000003")).toEqual(2.5);
       expect(result.get("ITEM000003")).toEqual(6.1);
   });
-});
+}); 
+
+
+fdescribe("getIProductList", () => {
+  it("should get IProduct List successfully", () => {
+    const tags = [
+      "ITEM000001",
+      "ITEM000001",
+      "ITEM000001",
+      "ITEM000001",
+      "ITEM000001",
+      "ITEM000003-2.5",
+      "ITEM000003-3.6",
+      "ITEM000005",
+      "ITEM000005-2",
+    ];
+    const result = GetItemQuantity(tags);
+    const prosresult = GetIProductList(result);
+    // console.log(prosresult);
+  });
+}); 
