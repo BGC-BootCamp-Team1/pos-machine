@@ -1,6 +1,6 @@
 import {loadAllItems, loadPromotions} from './Dependencies'
 import {Decimal} from 'decimal.js';
-import {Item, ItemMetaData, MetaData} from "./Model";
+import {Item, ItemMetaData, MetaData, Promotion} from "./Model";
 
 export function convert2Map(tags: string[]) {
   let map = new Map<string,number>();
@@ -24,7 +24,7 @@ export function convert2Map(tags: string[]) {
 
 export function generateReceiptMetaData(map: Map<string, number>,
                                         itemList:Item[],
-                                        promotionList: { type: string; barcodes: string[] }[])
+                                        promotionList: Promotion[])
     :MetaData {
   let metaData:MetaData={
     DiscountedPrices: new Decimal(0),

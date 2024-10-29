@@ -21,3 +21,9 @@ export interface ItemMetaData{
     unit:string;
     Subtotal:Decimal;
 }
+
+export interface Promotion
+{
+    type: string;
+    barcodes: string[]
+}
