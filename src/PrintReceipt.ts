@@ -3,10 +3,10 @@ import {Decimal} from 'decimal.js';
 import {Item, ItemMetaData, MetaData, Promotion} from "./Model";
 
 export function convert2Map(tags: string[]) {
-  let map = new Map<string,number>();
-  for (let tag of tags) {
+  const map = new Map<string,number>();
+  for (const tag of tags) {
     let quantity:number = 0;
-    let barcode:string = tag.split('-')[0];
+    const barcode:string = tag.split('-')[0];
     if(tag.split('-').length <= 1) {
       quantity = 1;
     }else {
@@ -26,17 +26,17 @@ export function generateReceiptMetaData(map: Map<string, number>,
                                         itemList:Item[],
                                         promotionList: Promotion[])
     :MetaData {
-  let metaData:MetaData={
+  const metaData:MetaData={
     DiscountedPrices: new Decimal(0),
     Total: new Decimal(0),
     items: []
   }
-  let promotion = promotionList[0];
+  const promotion = promotionList[0];
 
-  for (let [key, value] of map) {
-    let item :Item=itemList.find(obj => obj.barcode === key) as Item;
+  for (const [key, value] of map) {
+    const item :Item=itemList.find(obj => obj.barcode === key) as Item;
 
-    let itemMetaData:ItemMetaData = {
+    const itemMetaData:ItemMetaData = {
       Name: item.name,
       Quantity: new Decimal(value) ,
       Unit:item.price,
@@ -46,7 +46,7 @@ export function generateReceiptMetaData(map: Map<string, number>,
 
     if(promotion.barcodes.includes(key)){
       //disc
-      let subTotal= calculateTotalPriceOneFree(item.price,value);
+      const subTotal= calculateTotalPriceOneFree(item.price,value);
 
       itemMetaData.Subtotal = itemMetaData.Subtotal.add( subTotal);
 
@@ -65,7 +65,7 @@ export function generateReceiptMetaData(map: Map<string, number>,
 export function render(metaData: MetaData) {
   let receipt:string = "";
   receipt+=`***<store earning no money>Receipt ***\n`
-  for(let item of metaData.items) {
+  for(const item of metaData.items) {
     receipt+=`Name：${item.Name}，Quantity：${item.Quantity} ${item.unit}s，Unit：${item.Unit.toFixed(2)}(yuan)，Subtotal：${item.Subtotal.toFixed(2)}(yuan)\n`
   }
   receipt+=`----------------------\nTotal：${metaData.Total.toFixed(2)}(yuan)\nDiscounted prices：${metaData.DiscountedPrices.toFixed(2)}(yuan)\n**********************`
@@ -74,10 +74,10 @@ export function render(metaData: MetaData) {
 }
 
 export function printReceipt(tags: string[]): string {
-  let itemList = loadAllItems() as Item[];
-  let promotionList = loadPromotions();
+  const itemList = loadAllItems() as Item[];
+  const promotionList = loadPromotions();
   let map :Map<string,number> =convert2Map(tags)
-  let metaData:MetaData = generateReceiptMetaData(map,itemList,promotionList);
+  const metaData:MetaData = generateReceiptMetaData(map,itemList,promotionList);
   return render(metaData)
 }
 
