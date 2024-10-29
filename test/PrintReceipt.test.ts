@@ -44,14 +44,14 @@ Discounted prices：7.50(yuan)
   it('should return Promoted Receipts when checkPromotion', ()=>{
     let allPromotions: Promotion[] = loadPromotions();
     const receiptsMap: Map<string, ReceiptItem> = new Map([ 
-      ['ITEM000001', { name: 'Sprite', quantity: 2, unitName: 'bottle', unitMoney: 3.00, subtotal: 6.00 }],
+      ['ITEM000001', { name: 'Sprite', quantity: 4, unitName: 'bottle', unitMoney: 3.00, subtotal: 12.00 }],
       ['ITEM000003', { name: 'Litchi', quantity: 3.5, unitName: 'pound', unitMoney: 15.00, subtotal: 52.50 }]
     ])
     let discountedReceipts: ReceiptItem[] = checkPromotion(receiptsMap, allPromotions);
     const expectReceipts = 
     [
-      { name: 'Sprite', quantity: 2, unitName: 'bottle', unitMoney: 3.00, subtotal: 6.00 },
-      { name: 'Litchi', quantity: 3.5, unitName: 'pound', unitMoney: 15.00, subtotal: 37.50 }
+      { name: 'Sprite', quantity: 4, unitName: 'bottle', unitMoney: 3.00, subtotal: 9.00 },
+      { name: 'Litchi', quantity: 3.5, unitName: 'pound', unitMoney: 15.00, subtotal: 52.50 }
     ]
     expect(checkPromotion(receiptsMap, allPromotions)).toEqual(expectReceipts)
   })
