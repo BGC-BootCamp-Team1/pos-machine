@@ -55,7 +55,7 @@ export function calculateSubtotal(
   return itemPrices;
 }
 
-function generateReceiptItems(
+export function generateReceiptItems(
   itemCounts: ItemCount,
   itemPrices: ItemPrice,
   itemData: ItemDto[]
