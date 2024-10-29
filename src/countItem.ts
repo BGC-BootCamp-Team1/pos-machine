@@ -1,4 +1,3 @@
-import { ICount } from "./IProduct";
 
 export function countTag(tags: string[]): Map<string, number> {
   // 定义一个数组来存储结果

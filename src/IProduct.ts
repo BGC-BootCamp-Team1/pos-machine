@@ -7,7 +7,3 @@ export interface IProduct {
   subtotal: number;
 }
 
-export interface ICount{
-    barcode: string;
-    quantity: number;
-}
