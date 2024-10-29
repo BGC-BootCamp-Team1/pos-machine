@@ -1,4 +1,5 @@
-import {printReceipt, recordQuantity} from '../src/PrintReceipt'
+import { loadAllItems } from '../src/Dependencies'
+import {printReceipt, ReceiptItemDto, recordQuantityAndCalcPrice} from '../src/PrintReceipt'
 
 describe('printReceipt', () => {
   it('should print receipt with promotion when print receipt', () => {
@@ -28,8 +29,26 @@ Discounted prices：7.50(yuan)
 })
 
 describe('recordQuantity', () => {
+  const items = loadAllItems();
   it('should return empty given empty tags', () => {
-    expect(recordQuantity([])).toEqual([]);
+    expect(recordQuantityAndCalcPrice([], items)).toEqual([]);
+  })
+
+  it('should return 2 ReceiptItemDto with correct quantity', () => {
+    const tags = ["ITEM000001", "ITEM000005"];
+    const expectedReceptItems: ReceiptItemDto[] = [
+      {
+        barcode: "ITEM000001",
+        quantity: 1,
+        totalPrice: 3
+      },
+      {
+        barcode: "ITEM000005",
+        quantity: 1,
+        totalPrice: 4.5
+      }
+    ];
+    expect(recordQuantityAndCalcPrice(tags, items)).toEqual(expectedReceptItems);
   })
 })
 
