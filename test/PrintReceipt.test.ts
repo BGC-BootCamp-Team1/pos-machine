@@ -1,4 +1,20 @@
-import {printReceipt} from '../src/PrintReceipt'
+import {countReceiptItemsFromTags, printReceipt} from '../src/PrintReceipt'
+
+describe('printReceipt', () => {
+  it('should countReceiptItemsFromTags return correct counts', () => {
+    const tags = [
+      'ITEM000001',
+      'ITEM000001',
+      'ITEM000001',
+      'ITEM000001',
+      'ITEM000001',
+      'ITEM000003-2.5',
+      'ITEM000005',
+      'ITEM000005-2',
+    ]
+    expect(countReceiptItemsFromTags(tags)).toEqual({ "ITEM000001": 5, ITEM000003: 2.5, ITEM000005: 3 })
+  })
+})
 
 describe('printReceipt', () => {
   it('should print receipt with promotion when print receipt', () => {
