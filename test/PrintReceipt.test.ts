@@ -55,6 +55,10 @@ describe("parseTags", () => {
       "ITEM000005-2",
     ];
     const result = GetItemQuantity(tags);
-    console.log(result);
+    // console.log(result);
+      expect(result.size).toBe(3);
+      expect(result.get("ITEM000001")).toEqual(5);
+      // expect(result.get("ITEM000003")).toEqual(2.5);
+      expect(result.get("ITEM000003")).toEqual(6.1);
   });
 });
