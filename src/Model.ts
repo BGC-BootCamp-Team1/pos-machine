@@ -14,3 +14,8 @@ export interface Receipt
     Unit: number;
     Subtotal: number
 }
+export interface Promotion
+{
+  type: string,
+  barcodes: string[]
+}
