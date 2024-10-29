@@ -4,7 +4,7 @@ import { countTag } from "./countItem";
 import { loadAllItems, loadPromotions } from "./Dependencies";
 import { ICount, IProduct } from "./IProduct";
 
-export function parseTags(tags: string[]): IProduct[] {
+export function parseTags(tags: string[]) {
   const allProducts = loadAllItems();
   const tradeProducts: IProduct[] = [];
   const realtag = tags.map((tag) => tag.split("-")[0]);
@@ -40,7 +40,7 @@ export function parseTags(tags: string[]): IProduct[] {
     };
     tradeProducts.push(itemIProduct)
   }
-  return tradeProducts;
+  return {tradeProducts, totalDiscount};
 }
 
 

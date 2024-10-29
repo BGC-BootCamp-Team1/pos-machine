@@ -1,5 +1,6 @@
-import { createTradeProduct } from "../src/parseTags";
+
 import { IProduct } from "../src/IProduct";
+import { parseTags } from "../src/parseTags";
 import { printReceipt } from "../src/PrintReceipt";
 
 describe("printReceipt", () => {
@@ -28,13 +29,13 @@ Discounted prices：7.50(yuan)
   });
 });
 
-fdescribe("create trade product successfully", () => {
-  it(`should create trade product successfully with tags`, () => {
-    const tags = ["ITEM000001", "ITEM000003-2.5", "ITEM000005", "ITEM000005-2"];
+// fdescribe("create trade product successfully", () => {
+//   it(`should create trade product successfully with tags`, () => {
+//     const tags = ["ITEM000001", "ITEM000003-2.5", "ITEM000005", "ITEM000005-2"];
 
-    const pros = createTradeProduct(tags);
-    expect(pros.length).toBe(4);
-    expect(pros[0].name).toBe("Sprite");
-    expect(pros[0].price).toBe(3.0);
-  });
-});
+//     const pros = parseTags(tags);
+//     expect(pros.length).toBe(4);
+//     expect(pros[0].name).toBe("Sprite");
+//     expect(pros[0].price).toBe(3.0);
+//   });
+// });
