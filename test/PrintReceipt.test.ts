@@ -1,6 +1,6 @@
 import { loadAllItems, loadPromotions } from '../src/Dependencies'
 import { Item, Promotion, ReceiptItem } from '../src/Model'
-import {genAllReceipt, printReceipt, checkPromotion} from '../src/PrintReceipt'
+import {genAllReceipt, printReceipt, checkPromotion, render} from '../src/PrintReceipt'
 
 describe('printReceipt', () => {
   it('should print receipt with promotion when print receipt', () => {
@@ -54,5 +54,21 @@ Discounted prices：7.50(yuan)
       { name: 'Litchi', quantity: 3.5, unitName: 'pound', unitMoney: 15.00, subtotal: 52.50 }
     ]
     expect(checkPromotion(receiptsMap, allPromotions)).toEqual(expectReceipts)
+  })
+
+  it('should return rendered receipts when render',()=>{
+    const receipts = 
+    [
+      { name: 'Sprite', quantity: 4, unitName: 'bottle', unitMoney: 3.00, subtotal: 9.00 },
+      { name: 'Litchi', quantity: 3.5, unitName: 'pound', unitMoney: 15.00, subtotal: 52.50 }
+    ]
+    const expectRenderedReceipts = `***<store earning no money>Receipt ***
+    Name：Sprite，Quantity：4 bottles，Unit：3.00(yuan)，Subtotal：9.00(yuan)
+    Name：Litchi，Quantity：3.5 pounds，Unit：15.00(yuan)，Subtotal：52.50(yuan)
+    ----------------------
+    Total：61.50(yuan)
+    Discounted prices：3.00(yuan)
+    **********************`
+    expect(render(receipts)).toEqual(expectRenderedReceipts)
   })
 })
