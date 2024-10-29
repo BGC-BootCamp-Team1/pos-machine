@@ -63,12 +63,12 @@ Discounted prices：7.50(yuan)
       { name: 'Litchi', quantity: 3.5, unitName: 'pound', unitMoney: 15.00, subtotal: 52.50 }
     ]
     const expectRenderedReceipts = `***<store earning no money>Receipt ***
-    Name：Sprite，Quantity：4 bottles，Unit：3.00(yuan)，Subtotal：9.00(yuan)
-    Name：Litchi，Quantity：3.5 pounds，Unit：15.00(yuan)，Subtotal：52.50(yuan)
-    ----------------------
-    Total：61.50(yuan)
-    Discounted prices：3.00(yuan)
-    **********************`
+Name：Sprite，Quantity：4 bottles，Unit：3.00(yuan)，Subtotal：9.00(yuan)
+Name：Litchi，Quantity：3.5 pounds，Unit：15.00(yuan)，Subtotal：52.50(yuan)
+----------------------
+Total：61.50(yuan)
+Discounted prices：3.00(yuan)
+**********************`
     expect(render(receipts)).toEqual(expectRenderedReceipts)
   })
 })
