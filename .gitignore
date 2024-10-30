@@ -3,4 +3,4 @@ build
 coverage
 .DS_store
 src/countItem.ts
-src/parseTags
+src/parseTags.ts
