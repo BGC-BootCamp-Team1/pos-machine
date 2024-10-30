@@ -4,7 +4,7 @@ import { Item, Promotion, ReceiptItem } from './Model'
 export function printReceipt(tags: string[]): string {
   let allItems: Item[] = loadAllItems();
   let allPromotions: Promotion[] = loadPromotions();
-  let allReceipts = genAllReceipt(allItems, tags);
+  let allReceipts: Map<string, ReceiptItem> = genAllReceipt(allItems, tags);
   let discountedReceipts: ReceiptItem[] = checkPromotion(allReceipts, allPromotions);
   let renderedReceipts: string = render(discountedReceipts);
   return renderedReceipts
@@ -57,9 +57,9 @@ export function checkPromotion(itemMap: Map<string, ReceiptItem>, allPromotions:
 }
 
 export function render(allReceipts: ReceiptItem[]): string {
-  let total = 0;
-  let discountedTotal = 0;
-  const lines = [];
+  let total:number = 0;
+  let discountedTotal:number = 0;
+  const lines:string[] = [];
 
   lines.push('***<store earning no money>Receipt ***');
 
