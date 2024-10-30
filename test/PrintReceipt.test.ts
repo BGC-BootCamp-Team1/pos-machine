@@ -1,4 +1,7 @@
-import {printReceipt} from '../src/PrintReceipt'
+import { loadAllItems, loadPromotions } from '../src/Dependencies'
+import {applyPromotion, printReceipt, ReceiptItemDto, recordQuantityAndCalcPrice} from '../src/PrintReceipt'
+
+const items = loadAllItems();
 
 describe('printReceipt', () => {
   it('should print receipt with promotion when print receipt', () => {
@@ -23,5 +26,92 @@ Discounted prices：7.50(yuan)
 **********************`
 
     expect(printReceipt(tags)).toEqual(expectText)
+  })
+
+})
+
+describe('recordQuantity', () => {
+  const items = loadAllItems();
+  it('should return empty given empty tags', () => {
+    expect(recordQuantityAndCalcPrice([], items)).toEqual([]);
+  })
+
+  it('should return 2 ReceiptItemDto with correct quantity', () => {
+    const tags = ["ITEM000001", "ITEM000005"];
+    const expectedReceptItems: ReceiptItemDto[] = [
+      {
+        barcode: "ITEM000001",
+        quantity: 1,
+        subTotalPrice: 3
+      },
+      {
+        barcode: "ITEM000005",
+        quantity: 1,
+        subTotalPrice: 4.5
+      }
+    ];
+    expect(recordQuantityAndCalcPrice(tags, items)).toEqual(expectedReceptItems);
+  })
+
+  
+  it('should increase quantity with same barcode', () => {
+    const tags = ["ITEM000001", "ITEM000005", "ITEM000001"];
+    const expectedReceptItems: ReceiptItemDto[] = [
+      {
+        barcode: "ITEM000001",
+        quantity: 2,
+        subTotalPrice: 6
+      },
+      {
+        barcode: "ITEM000005",
+        quantity: 1,
+        subTotalPrice: 4.5
+      }
+    ];
+    expect(recordQuantityAndCalcPrice(tags, items)).toEqual(expectedReceptItems);
+  })
+
+  it('should deserialize weigh barcode', () => {
+    const tags = ["ITEM000001", "ITEM000005", "ITEM000001-1.5"];
+    const expectedReceptItems: ReceiptItemDto[] = [
+      {
+        barcode: "ITEM000001",
+        quantity: 2.5,
+        subTotalPrice: 7.5
+      },
+      {
+        barcode: "ITEM000005",
+        quantity: 1,
+        subTotalPrice: 4.5
+      }
+    ];
+    expect(recordQuantityAndCalcPrice(tags, items)).toEqual(expectedReceptItems);
+  })
+
+})
+
+describe('applyPromotion', () => {
+  const promotions = loadPromotions();
+  it('should return 0 discount with no items in promotion', () => {
+    const receiptItems : ReceiptItemDto[] = [
+      {
+        barcode: 'ITEM000004',
+        quantity: 1,
+        subTotalPrice: 1,
+      }
+    ]
+    expect(applyPromotion(receiptItems, promotions)).toBe(0);
+  })
+
+  it('should return discount amount given quantity is 7', () => {
+    const receiptItems : ReceiptItemDto[] = [
+      {
+        barcode: 'ITEM000000',
+        quantity: 7,
+        subTotalPrice: 21,
+      }
+    ]
+    expect(applyPromotion(receiptItems, promotions)).toBe(6);
+  
   })
 })
