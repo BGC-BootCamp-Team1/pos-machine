@@ -5,7 +5,7 @@ import { IProduct } from "../src/IProduct";
 import { printReceipt } from "../src/PrintReceipt";
 import { UpdateIProductList } from "../src/UpdateIProductList";
 
-fdescribe("printReceipt", () => {
+describe("printReceipt", () => {
   it("should print receipt with promotion when print receipt", () => {
     const tags = [
       "ITEM000001",
