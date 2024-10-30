@@ -26,7 +26,7 @@ export function printReceipt(tags: string[]): string {
     items
   );
 
-  const discount = applyPromotion(receiptItems, promotions);
+  const discount: number = applyPromotion(receiptItems, promotions);
 
   const resultText = render(receiptItems, items, discount);
 
