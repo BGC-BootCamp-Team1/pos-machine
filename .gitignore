@@ -2,3 +2,5 @@ node_modules
 build
 coverage
 .DS_store
+src/countItem.ts
+src/parseTags
