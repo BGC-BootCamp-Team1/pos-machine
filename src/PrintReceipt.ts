@@ -14,7 +14,7 @@ interface PromotionDto {
 export interface ReceiptItemDto {
   barcode: string;
   quantity: number;
-  totalPrice: number;
+  subTotalPrice: number;
 }
 
 export function printReceipt(tags: string[]): string {
@@ -47,9 +47,9 @@ export function render(
     resText += `Name：${itemDescription?.name}，`;
     resText += `Quantity：${receiptItem.quantity} ${itemDescription?.unit}s，`;
     resText += `Unit：${itemDescription?.price.toFixed(2)}(yuan)，`;
-    resText += `Subtotal：${receiptItem.totalPrice.toFixed(2)}(yuan)\n`;
+    resText += `Subtotal：${receiptItem.subTotalPrice.toFixed(2)}(yuan)\n`;
 
-    totalPrice += receiptItem.totalPrice;
+    totalPrice += receiptItem.subTotalPrice;
   }
   resText += "----------------------\n";
   resText += `Total：${totalPrice.toFixed(2)}(yuan)\n`;
@@ -64,15 +64,18 @@ export function applyPromotion(
   promotions: PromotionDto[]
 ): number {
   let allDiscount = 0;
-  const promotion = promotions[0];
-  for (let item of receiptItems) {
-    if (promotion.barcodes.includes(item.barcode)) {
-      const freeAmount = Math.floor(item.quantity / 3);
-      const discount = (item.totalPrice / item.quantity) * freeAmount;
-      item.totalPrice = item.totalPrice - discount;
-      allDiscount += discount;
+  for (let promotion of promotions)
+  {
+    for (let item of receiptItems) {
+      if (promotion.barcodes.includes(item.barcode)) {
+        const freeAmount = Math.floor(item.quantity / 3);
+        const discount = (item.subTotalPrice / item.quantity) * freeAmount;
+        item.subTotalPrice = item.subTotalPrice - discount;
+        allDiscount += discount;
+      }
     }
   }
+  
   return allDiscount;
 }
 
@@ -82,17 +85,17 @@ export function recordQuantityAndCalcPrice(
 ): ReceiptItemDto[] {
   const res: ReceiptItemDto[] = [];
   for (let tag of tags) {
-    let deserializeTag = deserializeTagToReceiptItem(tag);
-    const existItem = res.find((i) => i.barcode === deserializeTag.barcode);
+    let receiptItems = parseTag(tag);
+    const existItem = res.find((i) => i.barcode === receiptItems.barcode);
     if (existItem) {
-      existItem.quantity = deserializeTag.quantity + existItem.quantity;
-      existItem.totalPrice =
-        existItem.quantity * findUnitPrice(deserializeTag.barcode, items);
+      existItem.quantity = receiptItems.quantity + existItem.quantity;
+      existItem.subTotalPrice =
+        existItem.quantity * findUnitPrice(receiptItems.barcode, items);
     } else {
-      const unitPrice = findUnitPrice(deserializeTag.barcode, items);
-      deserializeTag.totalPrice = deserializeTag.quantity * unitPrice;
+      const unitPrice = findUnitPrice(receiptItems.barcode, items);
+      receiptItems.subTotalPrice = receiptItems.quantity * unitPrice;
 
-      res.push(deserializeTag);
+      res.push(receiptItems);
     }
   }
   return res;
@@ -104,19 +107,19 @@ function findUnitPrice(tag: string, items: ItemDto[]): number {
   return target.price;
 }
 
-function deserializeTagToReceiptItem(tag: string): ReceiptItemDto {
+function parseTag(tag: string): ReceiptItemDto {
   if (tag.includes("-")) {
     const splitTag = tag.split("-");
     return {
       barcode: splitTag[0],
       quantity: Number.parseFloat(splitTag[1]),
-      totalPrice: 0,
+      subTotalPrice: 0,
     };
   } else {
     return {
       barcode: tag,
       quantity: 1,
-      totalPrice: 0,
+      subTotalPrice: 0,
     };
   }
 }

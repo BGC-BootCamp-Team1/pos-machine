@@ -42,12 +42,12 @@ describe('recordQuantity', () => {
       {
         barcode: "ITEM000001",
         quantity: 1,
-        totalPrice: 3
+        subTotalPrice: 3
       },
       {
         barcode: "ITEM000005",
         quantity: 1,
-        totalPrice: 4.5
+        subTotalPrice: 4.5
       }
     ];
     expect(recordQuantityAndCalcPrice(tags, items)).toEqual(expectedReceptItems);
@@ -60,12 +60,12 @@ describe('recordQuantity', () => {
       {
         barcode: "ITEM000001",
         quantity: 2,
-        totalPrice: 6
+        subTotalPrice: 6
       },
       {
         barcode: "ITEM000005",
         quantity: 1,
-        totalPrice: 4.5
+        subTotalPrice: 4.5
       }
     ];
     expect(recordQuantityAndCalcPrice(tags, items)).toEqual(expectedReceptItems);
@@ -77,12 +77,12 @@ describe('recordQuantity', () => {
       {
         barcode: "ITEM000001",
         quantity: 2.5,
-        totalPrice: 7.5
+        subTotalPrice: 7.5
       },
       {
         barcode: "ITEM000005",
         quantity: 1,
-        totalPrice: 4.5
+        subTotalPrice: 4.5
       }
     ];
     expect(recordQuantityAndCalcPrice(tags, items)).toEqual(expectedReceptItems);
@@ -97,7 +97,7 @@ describe('applyPromotion', () => {
       {
         barcode: 'ITEM000004',
         quantity: 1,
-        totalPrice: 1,
+        subTotalPrice: 1,
       }
     ]
     expect(applyPromotion(receiptItems, promotions)).toBe(0);
@@ -108,7 +108,7 @@ describe('applyPromotion', () => {
       {
         barcode: 'ITEM000000',
         quantity: 7,
-        totalPrice: 21,
+        subTotalPrice: 21,
       }
     ]
     expect(applyPromotion(receiptItems, promotions)).toBe(6);
