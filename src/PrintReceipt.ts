@@ -86,18 +86,16 @@ export function generateReceipt(
 function renderReceipt(receipt: Receipt): string {
   let receiptString: string = "***<store earning no money>Receipt ***\n";
   receipt.receiptItems.forEach(receiptItem => {
-    receiptString+=`Name：${receiptItem.name}，`
-    receiptString+=`Quantity：${receiptItem.quantity} ${receiptItem.unit}`
+    receiptString+=`Name：${receiptItem.name}，Quantity：${receiptItem.quantity} ${receiptItem.unit}`
     if(receiptItem.quantity!==1){
       receiptString+="s"
     }
-    receiptString+=`，Unit：${receiptItem.unitPrice.toFixed(2)}(yuan)，`
-    receiptString+=`Subtotal：${receiptItem.subtotal.toFixed(2)}(yuan)\n`
+    receiptString+=`，Unit：${receiptItem.unitPrice.toFixed(2)}(yuan)，Subtotal：${receiptItem.subtotal.toFixed(2)}(yuan)\n`
   });
-  receiptString+="----------------------\n";
-  receiptString+=`Total：${receipt.total.toFixed(2)}(yuan)\n`
-  receiptString+=`Discounted prices：${receipt.discountedPrice.toFixed(2)}(yuan)\n`
-  receiptString+="**********************"
+  receiptString += `----------------------
+Total：${receipt.total.toFixed(2)}(yuan)
+Discounted prices：${receipt.discountedPrice.toFixed(2)}(yuan)
+**********************`
   return receiptString;
 }
 
