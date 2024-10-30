@@ -37,23 +37,23 @@ export function generateReceiptMetaData(map: Map<string, number>,
     const item :Item=itemList.find(obj => obj.barcode === key) as Item;
 
     const itemMetaData:ItemMetaData = {
-      Name: item.name,
-      Quantity: new Decimal(value) ,
-      Unit:item.price,
-      unit:item.unit,
-      Subtotal:new Decimal(0)
+      name: item.name,
+      quantity: new Decimal(value) ,
+      unitNumber:item.price,
+      unitName:item.unit,
+      subtotal:new Decimal(0)
     }
 
     if(promotion.barcodes.includes(key)){
       //disc
       const subTotal= calculateTotalPriceOneFree(item.price,value);
 
-      itemMetaData.Subtotal = itemMetaData.Subtotal.add( subTotal);
+      itemMetaData.subtotal = itemMetaData.subtotal.add( subTotal);
 
       metaData.DiscountedPrices = metaData.DiscountedPrices.add(item.price*value-subTotal);
       metaData.Total =metaData.Total.add(subTotal);
     }else {
-      itemMetaData.Subtotal = itemMetaData.Subtotal.add(item.price*value);
+      itemMetaData.subtotal = itemMetaData.subtotal.add(item.price*value);
       metaData.Total = metaData.Total.add(item.price*value);
     }
 
@@ -66,7 +66,7 @@ export function render(metaData: MetaData) {
   let receipt:string = "";
   receipt+=`***<store earning no money>Receipt ***\n`
   for(const item of metaData.items) {
-    receipt+=`Name：${item.Name}，Quantity：${item.Quantity} ${item.unit}s，Unit：${item.Unit.toFixed(2)}(yuan)，Subtotal：${item.Subtotal.toFixed(2)}(yuan)\n`
+    receipt+=`Name：${item.name}，Quantity：${item.quantity} ${item.unitName}s，Unit：${item.unitNumber.toFixed(2)}(yuan)，Subtotal：${item.subtotal.toFixed(2)}(yuan)\n`
   }
   receipt+=`----------------------\nTotal：${metaData.Total.toFixed(2)}(yuan)\nDiscounted prices：${metaData.DiscountedPrices.toFixed(2)}(yuan)\n**********************`
 

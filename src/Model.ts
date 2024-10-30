@@ -15,11 +15,11 @@ export interface MetaData{
 }
 
 export interface ItemMetaData{
-    Name: string;
-    Quantity: Decimal;
-    Unit:number;
-    unit:string;
-    Subtotal:Decimal;
+    name: string;
+    quantity: Decimal;
+    unitNumber:number;
+    unitName:string;
+    subtotal:Decimal;
 }
 
 export interface Promotion
