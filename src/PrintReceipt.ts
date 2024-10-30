@@ -1,25 +1,25 @@
 import { loadAllItems, loadPromotions } from "./Dependencies";
-import { ItemDto, Promotion, ReceiptItem } from "./Models";
+import { ItemDto, Promotion, Receipt, ReceiptItem } from "./Models";
 
-interface ItemCount {
-  [key: string]: number;
+interface ItemCountDictionary {
+  [barcode: string]: number;
 }
 
-interface ItemPrice {
-  [key: string]: number;
+interface ItemPriceDictionary {
+  [barcode: string]: number;
 }
 
 export function printReceipt(tags: string[]): string {
-  const itemData: ItemDto[] = loadAllItems() as ItemDto[];
+  const itemDtos: ItemDto[] = loadAllItems() as ItemDto[];
   const promotions: Promotion[] = loadPromotions() as Promotion[];
-  const itemCounts: ItemCount = countReceiptItemsFromTags(tags);
-  const itemPrices: ItemPrice = calculateSubtotal(itemCounts, promotions, itemData);
-  const receiptItems: ReceiptItem[] = generateReceiptItems(itemCounts,itemPrices,itemData);
-  return renderReceipt(receiptItems);
+  const itemCounts: ItemCountDictionary = countReceiptItemsFromTags(tags);
+  const itemPrices: ItemPriceDictionary = calculateSubtotal(itemCounts, promotions, itemDtos);
+  const receipt: Receipt = generateReceipt(itemCounts,itemPrices,itemDtos);
+  return renderReceipt(receipt);
 }
 
-export function countReceiptItemsFromTags(tags: string[]): ItemCount {
-  const itemCounts: ItemCount = {};
+export function countReceiptItemsFromTags(tags: string[]): ItemCountDictionary {
+  const itemCounts: ItemCountDictionary = {};
   tags.forEach((item) => {
     let [barcode, quantityStr] = item.split("-");
     let quantity = quantityStr ? parseFloat(quantityStr) : 1;
@@ -33,12 +33,12 @@ export function countReceiptItemsFromTags(tags: string[]): ItemCount {
   return itemCounts;
 }
 export function calculateSubtotal(
-  itemCounts: ItemCount,
+  itemCounts: ItemCountDictionary,
   promotions: Promotion[],
-  itemData: ItemDto[]
-): ItemPrice {
-  const itemPrices: ItemPrice = {};
-  itemData.forEach(itemDto => {
+  itemDtos: ItemDto[]
+): ItemPriceDictionary {
+  const itemPrices: ItemPriceDictionary = {};
+  itemDtos.forEach(itemDto => {
     const barcode = itemDto.barcode;
     if (itemCounts.hasOwnProperty(barcode)) {
       let quantity = itemCounts[barcode];
@@ -55,13 +55,13 @@ export function calculateSubtotal(
   return itemPrices;
 }
 
-export function generateReceiptItems(
-  itemCounts: ItemCount,
-  itemPrices: ItemPrice,
-  itemData: ItemDto[]
-): ReceiptItem[]{
+export function generateReceipt(
+  itemCounts: ItemCountDictionary,
+  itemPrices: ItemPriceDictionary,
+  itemDtos: ItemDto[]
+): Receipt{
   const receiptItems: ReceiptItem[]=[]
-  itemData.forEach(itemDto => {
+  itemDtos.forEach(itemDto => {
     const barcode = itemDto.barcode;
     if (itemCounts.hasOwnProperty(barcode) && itemPrices.hasOwnProperty(barcode)) {
       receiptItems.push({
@@ -73,29 +73,32 @@ export function generateReceiptItems(
       })
     }
   });
-  return receiptItems;
+  const total = calculateTotalAfterDiscount(receiptItems);
+  const discountedPrice = calculateTotalBeforeDiscount(receiptItems)-total;
+  const receipt: Receipt={
+    receiptItems: receiptItems,
+    total: total,
+    discountedPrice: discountedPrice
+  }
+  return receipt;
 }
 
-function renderReceipt(receiptItems: ReceiptItem[]): string {
-  let receipt: string = "***<store earning no money>Receipt ***\n";
-  receiptItems.forEach(receiptItem => {
-    receipt+=`Name：${receiptItem.name}，Quantity：${receiptItem.quantity} ${receiptItem.unit}`
+function renderReceipt(receipt: Receipt): string {
+  let receiptString: string = "***<store earning no money>Receipt ***\n";
+  receipt.receiptItems.forEach(receiptItem => {
+    receiptString+=`Name：${receiptItem.name}，`
+    receiptString+=`Quantity：${receiptItem.quantity} ${receiptItem.unit}`
     if(receiptItem.quantity!==1){
-      receipt+="s"
+      receiptString+="s"
     }
-    receipt+="，Unit："
-    receipt+=receiptItem.unitPrice.toFixed(2)
-    receipt+="(yuan)，Subtotal："
-    receipt+=receiptItem.subtotal.toFixed(2)
-    receipt+="(yuan)\n"
-    
+    receiptString+=`，Unit：${receiptItem.unitPrice.toFixed(2)}(yuan)，`
+    receiptString+=`Subtotal：${receiptItem.subtotal.toFixed(2)}(yuan)\n`
   });
-  receipt+="----------------------\n";
-  receipt+="Total："+ calculateTotalAfterDiscount(receiptItems).toFixed(2) +"(yuan)\n"
-  const discountedPrice = calculateTotalBeforeDiscount(receiptItems)-calculateTotalAfterDiscount(receiptItems)
-  receipt+="Discounted prices："+discountedPrice.toFixed(2)+"(yuan)\n"
-  receipt+="**********************"
-  return receipt;
+  receiptString+="----------------------\n";
+  receiptString+=`Total：${receipt.total.toFixed(2)}(yuan)\n`
+  receiptString+=`Discounted prices：${receipt.discountedPrice.toFixed(2)}(yuan)\n`
+  receiptString+="**********************"
+  return receiptString;
 }
 
 function calculateTotalAfterDiscount(receiptItems: ReceiptItem[]): number{

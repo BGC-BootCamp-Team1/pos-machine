@@ -1,6 +1,6 @@
 import { loadAllItems, loadPromotions } from '../src/Dependencies'
-import { ItemDto, ReceiptItem, Promotion } from '../src/Models'
-import {calculateSubtotal, countReceiptItemsFromTags, generateReceiptItems, printReceipt} from '../src/PrintReceipt'
+import { ItemDto, ReceiptItem, Promotion, Receipt } from '../src/Models'
+import {calculateSubtotal, countReceiptItemsFromTags, generateReceipt, printReceipt} from '../src/PrintReceipt'
 
 const itemData: ItemDto[] = loadAllItems() as ItemDto[];
 const promotions: Promotion[] = loadPromotions() as Promotion[];
@@ -28,12 +28,12 @@ describe('calculateSubtotal', () => {
   })
 })
 
-describe('generateReceiptItems', () => {
-  it('should return correct prices', () => {
+describe('generateReceipt', () => {
+  it('should return total receipt', () => {
     const itemCounts = { ITEM000001: 5, ITEM000003: 2.5};
     const itemPrices = { ITEM000001: 12.00, ITEM000003: 37.50}
-    const expectedReceiptItems: ReceiptItem[] = [
-      {
+    const expectedReceipt: Receipt = {
+      receiptItems: [{
         name: "Sprite",
         quantity: 5,
         unit: "bottle",
@@ -47,8 +47,10 @@ describe('generateReceiptItems', () => {
         unitPrice: 15.00,
         subtotal: 37.50
       }
-    ]
-    expect(generateReceiptItems(itemCounts,itemPrices,itemData)).toEqual(expectedReceiptItems)
+    ],
+      total: 49.50,
+      discountedPrice: 3.00}
+    expect(generateReceipt(itemCounts,itemPrices,itemData)).toEqual(expectedReceipt)
   })
 })
 

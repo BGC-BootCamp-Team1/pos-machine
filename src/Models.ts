@@ -16,3 +16,9 @@ export interface Promotion{
     type: string,
     barcodes: string[];
 }
+
+export interface Receipt{
+    receiptItems: ReceiptItem[],
+    total: number,
+    discountedPrice: number
+}
