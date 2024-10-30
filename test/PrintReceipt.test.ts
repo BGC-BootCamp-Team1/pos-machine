@@ -1,6 +1,6 @@
 import { loadAllItems, loadPromotions } from '../src/Dependencies'
 import { ItemDto, ReceiptItem, Promotion, Receipt } from '../src/Models'
-import {calculateSubtotal, countReceiptItemsFromTags, generateReceipt, printReceipt} from '../src/PrintReceipt'
+import {calculateSubtotal, countReceiptItemsFromTags, generateReceipt, printReceipt, renderReceipt} from '../src/PrintReceipt'
 
 const itemData: ItemDto[] = loadAllItems() as ItemDto[];
 const promotions: Promotion[] = loadPromotions() as Promotion[];
@@ -51,6 +51,37 @@ describe('generateReceipt', () => {
       total: 49.50,
       discountedPrice: 3.00}
     expect(generateReceipt(itemCounts,itemPrices,itemData)).toEqual(expectedReceipt)
+  })
+})
+
+describe('renderReceipt', () => {
+  it('should render receipt', () => {
+    const receipt: Receipt = {
+      receiptItems: [{
+        name: "Sprite",
+        quantity: 5,
+        unit: "bottle",
+        unitPrice: 3.00,
+        subtotal: 12.00
+      },
+      {
+        name: "Litchi",
+        quantity: 2.5,
+        unit: "pound",
+        unitPrice: 15.00,
+        subtotal: 37.50
+      }
+    ],
+      total: 49.50,
+      discountedPrice: 3.00}
+    const expectedReceiptString: string = `***<store earning no money>Receipt ***
+Name：Sprite，Quantity：5 bottles，Unit：3.00(yuan)，Subtotal：12.00(yuan)
+Name：Litchi，Quantity：2.5 pounds，Unit：15.00(yuan)，Subtotal：37.50(yuan)
+----------------------
+Total：49.50(yuan)
+Discounted prices：37.50(yuan)
+**********************`
+    expect(renderReceipt(receipt)).toEqual(expectedReceiptString)
   })
 })
 

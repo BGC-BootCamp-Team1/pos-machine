@@ -83,7 +83,7 @@ export function generateReceipt(
   return receipt;
 }
 
-function renderReceipt(receipt: Receipt): string {
+export function renderReceipt(receipt: Receipt): string {
   let receiptString: string = "***<store earning no money>Receipt ***\n";
   receipt.receiptItems.forEach(receiptItem => {
     receiptString+=`Name：${receiptItem.name}，Quantity：${receiptItem.quantity} ${receiptItem.unit}`
