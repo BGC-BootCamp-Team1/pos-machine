@@ -90,9 +90,9 @@ export function recordQuantityAndCalcPrice(
     if (existItem) {
       existItem.quantity = receiptItems.quantity + existItem.quantity;
       existItem.subTotalPrice =
-        existItem.quantity * findUnitPrice(receiptItems.barcode, items);
+        existItem.quantity * getItemUnitPriceByBarcode(receiptItems.barcode, items);
     } else {
-      const unitPrice = findUnitPrice(receiptItems.barcode, items);
+      const unitPrice = getItemUnitPriceByBarcode(receiptItems.barcode, items);
       receiptItems.subTotalPrice = receiptItems.quantity * unitPrice;
 
       res.push(receiptItems);
@@ -101,7 +101,7 @@ export function recordQuantityAndCalcPrice(
   return res;
 }
 
-function findUnitPrice(tag: string, items: ItemDto[]): number {
+function getItemUnitPriceByBarcode(tag: string, items: ItemDto[]): number {
   var target = items.find((item) => item.barcode === tag);
   if (!target) return 0;
   return target.price;
